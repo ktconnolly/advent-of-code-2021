@@ -8,14 +8,8 @@ def spawn(days):
     for age in read_input():
         age_counts[age] += 1
 
-    for _ in range(days):
-        zero_count = age_counts[0]
-
-        for age in range(8):
-            age_counts[age] = age_counts[age + 1]
-
-        age_counts[8] = zero_count
-        age_counts[6] += zero_count
+    for i in range(days):
+        age_counts[(i + 7) % 9] += age_counts[i % 9]
 
     return sum(age_counts)
 
