@@ -1,15 +1,13 @@
+from utils import *
+
+
 def read_input():
     with open("inputs/day_08.txt") as file:
         return [(l1.split(), l2.split()) for l1, l2 in [l.strip().split(" | ") for l in file.readlines()]]
 
 
 def part_one():
-    count = 0
-    for _, output in read_input():
-        for digit in output:
-            if len(digit) in (2, 3, 4, 7):
-                count += 1
-    return count
+    return sum(len(digit) in (2, 3, 4, 7) for digit in flatten([output for _, output in read_input()]))
 
 
 def get_numbers_map(signals):

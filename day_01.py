@@ -5,7 +5,7 @@ def read_input():
 
 def part_one():
     depths = read_input()
-    return sum(1 if depths[i] > depths[i - 1] else 0 for i in range(1, len(depths)))
+    return sum(depths[i] > depths[i - 1] for i in range(1, len(depths)))
 
 
 def part_two():

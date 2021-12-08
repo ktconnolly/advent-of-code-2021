@@ -34,7 +34,7 @@ def get_intersection_count(include_diagonals):
             for p in get_points_between(p1, p2):
                 intersection_sums[p] += 1
 
-    return sum(1 if intersections > 1 else 0 for intersections in intersection_sums.values())
+    return sum(intersections > 1 for intersections in intersection_sums.values())
 
 
 def part_one():
