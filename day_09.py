@@ -37,18 +37,14 @@ def get_low_points(height_map):
 
 
 def get_basin(height_map, p):
-    neighbours = list(get_neighbours(height_map, p))
+    basin, found = {p}, set()
+    while basin:
+        for n in get_neighbours(height_map, basin.pop()):
+            if height_map[n.y][n.x] != 9 and n not in found:
+                basin.add(n)
+                found.add(n)
 
-    basin, searched = {p}, {p}
-    while neighbours:
-        n = neighbours.pop()
-        searched.add(n)
-
-        if height_map[n.y][n.x] != 9:
-            basin.add(n)
-            neighbours += [n for n in get_neighbours(height_map, n) if n not in searched]
-
-    return basin
+    return found
 
 
 def part_one():
