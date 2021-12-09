@@ -10,9 +10,16 @@ def read_input():
 
 
 def get_neighbours(height_map, p):
-    neighbours = Point(p.x + 1, p.y), Point(p.x - 1, p.y), Point(p.x, p.y + 1), Point(p.x, p.y - 1)
     h, w = len(height_map), len(height_map[0])
-    return [n for n in neighbours if n.y in range(h) and n.x in range(w)]
+
+    if p.y > 0:
+        yield Point(p.x, p.y - 1)
+    if p.y + 1 < h:
+        yield Point(p.x, p.y + 1)
+    if p.x > 0:
+        yield Point(p.x - 1, p.y)
+    if p.x + 1 < w:
+        yield Point(p.x + 1, p.y)
 
 
 def is_below_neighbours(height_map, p):
@@ -30,7 +37,7 @@ def get_low_points(height_map):
 
 
 def get_basin(height_map, p):
-    neighbours = get_neighbours(height_map, p)
+    neighbours = list(get_neighbours(height_map, p))
 
     basin, searched = {p}, {p}
     while neighbours:
