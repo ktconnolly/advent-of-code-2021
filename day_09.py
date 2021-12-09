@@ -20,8 +20,13 @@ def is_below_neighbours(height_map, p):
 
 
 def get_low_points(height_map):
-    h, w = len(height_map), len(height_map[0])
-    return [Point(x, y) for y in range(h) for x in range(w) if is_below_neighbours(height_map, Point(x, y))]
+    def get_all_points():
+        h, w = len(height_map), len(height_map[0])
+        for y in range(h):
+            for x in range(w):
+                yield Point(x, y)
+
+    return [p for p in get_all_points() if is_below_neighbours(height_map, p)]
 
 
 def get_basin(height_map, p):
