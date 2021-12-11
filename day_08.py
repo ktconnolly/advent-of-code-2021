@@ -1,12 +1,12 @@
-from utils import *
-
-
 def read_input():
     with open("inputs/day_08.txt") as file:
         return [(l1.split(), l2.split()) for l1, l2 in [l.strip().split(" | ") for l in file.readlines()]]
 
 
 def part_one():
+    def flatten(t):
+        return [item for sublist in t for item in sublist]
+
     return sum(len(digit) in (2, 3, 4, 7) for digit in flatten([output for _, output in read_input()]))
 
 
