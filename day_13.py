@@ -4,9 +4,6 @@ def read_input():
         fold_instructions = []
 
         for line in file:
-            if not line:
-                continue
-
             if line.startswith("fold"):
                 axis, value = line.split()[-1].split("=")
                 fold_instructions.append((axis, int(value)))
@@ -17,18 +14,15 @@ def read_input():
         return dots, fold_instructions
 
 
-def pretty_print(dots):
-    max_x = max(d[0] for d in dots)
-    max_y = max(d[1] for d in dots)
+def to_string(dots):
+    max_x = max(x for x, _ in dots)
+    max_y = max(y for _, y in dots)
     string = ["\n"]
 
     for y in range(max_y + 1):
         row = ""
         for x in range(max_x + 1):
-            if (x, y) in dots:
-                row += "#"
-            else:
-                row += " "
+            row += "#" if (x, y) in dots else " "
 
         string.append(row)
 
@@ -37,34 +31,30 @@ def pretty_print(dots):
 
 def fold(dots, fold_instruction):
     axis, value = fold_instruction
-    to_remove = set()
-    to_add = set()
+    folded_dots = set()
+
     for x, y in dots:
-        if axis == "y":
-            if y > value:
-                to_remove.add((x, y))
-                to_add.add((x, value - (y - value)))
+        if axis == "y" and y > value:
+            y = 2 * value - y
+        elif axis == "x" and x > value:
+            x = 2 * value - x
 
-        elif axis == "x":
-            if x > value:
-                to_remove.add((x, y))
-                to_add.add((value - (x - value), y))
+        folded_dots.add((x, y))
 
-    dots -= to_remove
-    dots.update(to_add)
+    return folded_dots
 
 
 def part_one():
     dots, fold_instructions = read_input()
-    fold(dots, fold_instructions[0])
+    dots = fold(dots, fold_instructions[0])
     return len(dots)
 
 
 def part_two():
     dots, fold_instructions = read_input()
     for instruction in fold_instructions:
-        fold(dots, instruction)
-    return pretty_print(dots)
+        dots = fold(dots, instruction)
+    return to_string(dots)
 
 
 assert part_one() == 602
