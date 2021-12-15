@@ -66,11 +66,11 @@ def dijkstra(cave, tiles=1):
             continue
 
         for neighbor in get_neighbours(current_node, height, width):
-            risk = risks.get(current_node, MAX_RISK) + get_risk(neighbor)
+            neighbour_risk = risks.get(current_node, MAX_RISK) + get_risk(neighbor)
 
-            if risk < risks.get(neighbor, MAX_RISK):
-                risks[neighbor] = risk
-                heapq.heappush(pq, (risk, neighbor))
+            if neighbour_risk < risks.get(neighbor, MAX_RISK):
+                risks[neighbor] = neighbour_risk
+                heapq.heappush(pq, (neighbour_risk, neighbor))
 
 
 def build_graph(cave):
