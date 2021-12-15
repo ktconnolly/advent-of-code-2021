@@ -60,7 +60,7 @@ def dijkstra(cave, tiles=1):
         current_risk, current_node = heapq.heappop(pq)
 
         if current_node == end:
-            break
+            return current_risk
 
         if current_risk > risks.get(current_node, MAX_RISK):
             continue
@@ -71,8 +71,6 @@ def dijkstra(cave, tiles=1):
             if risk < risks.get(neighbor, MAX_RISK):
                 risks[neighbor] = risk
                 heapq.heappush(pq, (risk, neighbor))
-
-    return risks.get(end)
 
 
 def build_graph(cave):
