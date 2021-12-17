@@ -33,7 +33,7 @@ def in_target(pos, target):
     return target.min_x <= x <= target.max_x and target.min_y <= y <= target.max_y
 
 
-def launch_probe(velocity, target, pos=(0, 0)):
+def launch_probe(target, velocity, pos=(0, 0)):
     path = []
 
     while not in_target(pos, target):
@@ -41,34 +41,29 @@ def launch_probe(velocity, target, pos=(0, 0)):
 
         x, y = pos
         if x > target.max_x or y < target.min_y:
-            return False, path
+            return []
 
         path.append(pos)
 
-    return True, path
+    return path
 
 
-def get_max_heights(target):
-    heights = []
+def get_paths(target):
     for y in range(target.min_y, max(abs(target.min_y), abs(target.max_y))):
         for x in range(target.max_x + 1):
-            velocity = x, y
-            hit_target, path = launch_probe(velocity, target)
-
-            if hit_target:
-                heights.append(max(y for _, y in path))
-
-    return heights
+            path = launch_probe(target, velocity=(x, y))
+            if path:
+                yield path
 
 
 def part_one():
     target = read_input()
-    return max(get_max_heights(target))
+    return max(max(y for _, y in p) for p in get_paths(target))
 
 
 def part_two():
     target = read_input()
-    return len(get_max_heights(target))
+    return sum(1 for p in get_paths(target) if p)
 
 
 assert part_one() == 3003
